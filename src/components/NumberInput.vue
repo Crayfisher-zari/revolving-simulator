@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 type Props = {
   label: string;
-  unit?:string;
+  unit?: string;
 };
 defineProps<Props>();
-const model = defineModel();
+const model = defineModel<number>();
 </script>
 <template>
   <label>

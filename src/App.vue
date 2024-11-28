@@ -9,7 +9,7 @@ const payback = ref<number>(15);
 const calculated = computed(() => {
   let count = 0;
   let debtBalance = debtRows.value;
-  console.log(debtBalance)
+  console.log(debtBalance);
   const remainedDebtBalanceList = [];
   const paybackPrincipalList = [];
   const paybackInterestList = [];
@@ -17,13 +17,13 @@ const calculated = computed(() => {
   let isInfinity = false;
 
   while (debtBalance >= 0) {
-    console.log(debtBalance)
-    if(debtBalance > debtRows.value){
-      isInfinity = true
+    console.log(debtBalance);
+    if (debtBalance > debtRows.value) {
+      isInfinity = true;
       break;
     }
     // 当月の利子（残高×利率% / 12ヶ月）
-    const interestOfTheMonth = (debtBalance * interestRate.value/100) / 12;
+    const interestOfTheMonth = (debtBalance * interestRate.value) / 100 / 12;
 
     // 当月の負債残高
     const debtBalanceOfTheMonth = debtBalance + interestOfTheMonth;
@@ -44,7 +44,7 @@ const calculated = computed(() => {
     interestList.push(interestOfTheMonth);
 
     // 残高を更新
-    debtBalance = remainedDebtBalance
+    debtBalance = remainedDebtBalance;
     count++;
   }
 
@@ -80,12 +80,14 @@ const calculated = computed(() => {
 .logo {
   height: 6em;
   padding: 1.5em;
-  will-change: filter;
   transition: filter 300ms;
+  will-change: filter;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }

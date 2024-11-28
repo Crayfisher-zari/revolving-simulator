@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
 import NumberInput from "./components/NumberInput.vue";
 
 const debtRows = ref<number>(100);
@@ -66,13 +65,13 @@ const calculated = computed(() => {
 
 <template>
   <div>
-    <NumberInput label="負債行数" unit="行" v-model.number="debtRows" />
+    <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
   </div>
   <div>
-    <NumberInput label="利率（年利）" unit="%" v-model.number="interestRate" />
+    <NumberInput v-model.number="interestRate" label="利率（年利）" unit="%" />
   </div>
   <div>
-    <NumberInput label="毎月の返済行数" unit="行" v-model.number="payback" />
+    <NumberInput v-model.number="payback" label="毎月の返済行数" unit="行" />
   </div>
   {{ calculated.count }}
 </template>

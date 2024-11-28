@@ -2,59 +2,67 @@
 import { ref, computed } from "vue";
 import NumberInput from "./components/NumberInput.vue";
 
-const debtRows = ref<number>(100);
+const debtRows = ref<number>(100000);
 const interestRate = ref<number>(15);
-const payback = ref<number>(15);
+const payback = ref<number>(5000);
 
 const calculated = computed(() => {
   let count = 0;
   let debtBalance = debtRows.value;
-  console.log(debtBalance);
   const remainedDebtBalanceList = [];
   const paybackPrincipalList = [];
   const paybackInterestList = [];
   const interestList = [];
   let isInfinity = false;
+  let totalAmount = 0;
 
-  while (debtBalance >= 0) {
-    console.log(debtBalance);
+  while (debtBalance > 0) {
+    console.log(debtBalance, debtBalance > debtRows.value, payback.value);
     if (debtBalance > debtRows.value) {
       isInfinity = true;
       break;
     }
-    // 当月の利子（残高×利率% / 12ヶ月）
-    const interestOfTheMonth = (debtBalance * interestRate.value) / 100 / 12;
+    if (debtBalance >= debtRows.value && count > 2) {
+      isInfinity = true;
+      break;
+    }
+    // 当月の利子（残高×利率% / 12ヶ月）小数点切り捨て
+    const interestOfTheMonth = Math.trunc(
+      (debtBalance * interestRate.value) / 100 / 12
+    );
 
     // 当月の負債残高
     const debtBalanceOfTheMonth = debtBalance + interestOfTheMonth;
 
     // 当月の返済後の負債残高
     const remainedDebtBalance = debtBalanceOfTheMonth - payback.value;
+    // 0以下になったら0にする
+    const remainedDebtBalanceOverZero =
+      remainedDebtBalance < 0 ? 0 : remainedDebtBalance;
 
     // 今月の元金の支払額
-    const paybackPrincipal = interestOfTheMonth - payback.value;
+    const paybackPrincipal = payback.value - interestOfTheMonth;
 
     // 今月の利子の支払額
     const paybackInterest = payback.value - paybackPrincipal;
 
     // リストを更新
-    remainedDebtBalanceList.push(remainedDebtBalance);
-    paybackPrincipalList.push(paybackPrincipal);
-    paybackInterestList.push(paybackInterest);
-    interestList.push(interestOfTheMonth);
+    remainedDebtBalanceList.push(Math.round(remainedDebtBalanceOverZero));
+    paybackPrincipalList.push(Math.round(paybackPrincipal));
+    paybackInterestList.push(Math.round(paybackInterest));
+    interestList.push(Math.round(interestOfTheMonth));
+    totalAmount +=
+      remainedDebtBalanceOverZero === 0 ? debtBalance : payback.value;
 
     // 残高を更新
     debtBalance = remainedDebtBalance;
     count++;
   }
 
-  // while (count < 3) {
-  //   count++;
-  // }
-
   return {
     isInfinity,
     count,
+    totalAmount,
     remainedDebtBalanceList,
     paybackPrincipalList,
     paybackInterestList,
@@ -73,7 +81,8 @@ const calculated = computed(() => {
   <div>
     <NumberInput v-model.number="payback" label="毎月の返済行数" unit="行" />
   </div>
-  {{ calculated.count }}
+  <p>支払回数：{{ calculated.count }}</p>
+  <p>支払総額：{{ calculated.totalAmount }}</p>
 </template>
 
 <style scoped>

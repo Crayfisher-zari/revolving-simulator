@@ -28,7 +28,7 @@ const calculated = computed(() => {
     }
     // 当月の利子（残高×利率% / 12ヶ月）小数点切り捨て
     const interestOfTheMonth = Math.trunc(
-      (debtBalance * interestRate.value) / 100 / 12
+      (debtBalance * interestRate.value) / 100 / 12,
     );
 
     // 当月の負債残高

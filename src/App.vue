@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import NumberInput from "./components/NumberInput.vue";
+import ItemPanel from "./components/ItemPanel.vue";
 
 const debtRows = ref<number>(100000);
 const interestRate = ref<number>(15);
@@ -26,11 +27,8 @@ const calculated = computed(() => {
       isInfinity = true;
       break;
     }
-    // 当月の利子（残高×利率% / 12ヶ月）小数点切り捨て
-    const interestOfTheMonth = Math.trunc(
-      (debtBalance * interestRate.value) / 100 / 12,
-    );
-
+    // 当月の利子（残高×利率% / 12ヶ月）
+    const interestOfTheMonth = (debtBalance * interestRate.value) / 100 / 12;
     // 当月の負債残高
     const debtBalanceOfTheMonth = debtBalance + interestOfTheMonth;
 
@@ -72,9 +70,12 @@ const calculated = computed(() => {
 </script>
 
 <template>
-  <div>
-    <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
-  </div>
+  <ItemPanel panel-title="負債行数">
+    <div>
+      <NumberInput v-model.number="debtRows" unit="行" />
+    </div>
+  </ItemPanel>
+
   <div>
     <NumberInput v-model.number="interestRate" label="利率（年利）" unit="%" />
   </div>

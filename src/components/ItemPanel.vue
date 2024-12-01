@@ -26,7 +26,7 @@ defineProps<Props>();
   font-size: 20px;
 }
 
-.inner{
+.inner {
   height: 100%;
 }
 </style>

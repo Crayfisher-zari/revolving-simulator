@@ -27,31 +27,37 @@ defineProps<Props>();
     <div class="graphArea">
       <div class="barChart">
         <div
-          v-for="remained in remainedDebtBalanceList"
+          v-for="(remained, index) in remainedDebtBalanceList"
+          :key="index"
           class="bar"
-          :style="{height:`${remained / remainedDebtBalanceList[0] * 100}%`}"
+          :style="{
+            height: `${(remained / remainedDebtBalanceList[0]) * 100}%`,
+          }"
         ></div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-.wrapper{
+.wrapper {
   position: relative;
-  height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
-}
-.graphArea{
   height: 100%;
 }
-.barChart{
+
+.graphArea {
   height: 100%;
+}
+
+.barChart {
   display: flex;
-  align-items: flex-end;
   column-gap: 8px;
+  align-items: flex-end;
+  height: 100%;
 }
-.bar{
+
+.bar {
   width: 4px;
   background-color: pink;
 }

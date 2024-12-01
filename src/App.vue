@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
 import ItemPanel from "./components/ItemPanel.vue";
 
 const debtRows = ref<number>(100000);
 const interestRate = ref<number>(15);
 const payback = ref<number>(5000);
+const newPayback = ref<number | undefined>(undefined);
+const perMonth = ref<number | undefined>(undefined);
 
 const calculated = computed(() => {
   let count = 0;
@@ -70,35 +73,61 @@ const calculated = computed(() => {
 </script>
 
 <template>
-  <ItemPanel panel-title="負債行数">
-    <div>
-      <NumberInput v-model.number="debtRows" unit="行" />
-    </div>
-  </ItemPanel>
+  <GlobalLayout>
+    <template #debt>
+      <ItemPanel>
+        <div>
+          <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
+        </div>
+      </ItemPanel>
+    </template>
+    <template #interestRate>
+      <ItemPanel>
+        <NumberInput
+          v-model.number="interestRate"
+          label="利率（年利）"
+          unit="%"
+          :digits="3"
+        />
+      </ItemPanel>
+    </template>
+    <template #payback>
+      <ItemPanel>
+        <NumberInput
+          v-model.number="payback"
+          label="毎月の返済行数"
+          unit="行"
+          :digits="9"
+        />
+      </ItemPanel>
+    </template>
+    <template #newDebt>
+      <ItemPanel>
+        <div class="newPayback">
+          <NumberInput
+            v-model.number="newPayback"
+            label="新規の負債行数"
+            unit="行"
+            :digits="9"
+          />
+          <NumberInput
+            v-model.number="perMonth"
+            label="発生頻度"
+            unit="月に1回"
+            :digits="2"
+          />
+        </div>
+      </ItemPanel>
+    </template>
+  </GlobalLayout>
 
-  <div>
-    <NumberInput v-model.number="interestRate" label="利率（年利）" unit="%" />
-  </div>
-  <div>
-    <NumberInput v-model.number="payback" label="毎月の返済行数" unit="行" />
-  </div>
   <p>支払回数：{{ calculated.count }}</p>
   <p>支払総額：{{ calculated.totalAmount }}</p>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  transition: filter 300ms;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.newPayback {
+  display: flex;
+  column-gap: 16px;
 }
 </style>

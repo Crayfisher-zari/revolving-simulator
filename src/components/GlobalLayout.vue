@@ -1,6 +1,7 @@
 <script lang="ts" setup></script>
 <template>
-  <div class="layout">
+  <div class="globalWrapper">
+    <div class="layout">
     <div class="debtRows">
       <slot name="debt"></slot>
     </div>
@@ -17,11 +18,24 @@
       <slot name="graph"></slot>
     </div>
   </div>
+  </div>
+
 </template>
 <style scoped>
+.globalWrapper{
+  width: 100%;
+  height: 100vh;
+  padding: 32px;
+}
 .layout {
   display: grid;
-  grid-template: "debtRows interestRate payback newDebt" auto "graph graph graph  graph" auto / auto auto auto auto;
+  height: 100%;
+  grid-template: "debtRows interestRate payback newDebt" auto "graph graph graph  graph" 1fr / auto auto auto auto;
   gap: 24px;
 }
+
+.graph{
+  grid-area: graph;
+}
+
 </style>

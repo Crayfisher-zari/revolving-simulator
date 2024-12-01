@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
 import ItemPanel from "./components/ItemPanel.vue";
+import GraphView from "./components/GraphView.vue";
 
 const debtRows = ref<number>(100000);
 const interestRate = ref<number>(15);
@@ -76,9 +77,7 @@ const calculated = computed(() => {
   <GlobalLayout>
     <template #debt>
       <ItemPanel>
-        <div>
-          <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
-        </div>
+        <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
       </ItemPanel>
     </template>
     <template #interestRate>
@@ -117,6 +116,19 @@ const calculated = computed(() => {
             :digits="2"
           />
         </div>
+      </ItemPanel>
+    </template>
+    <template #graph>
+      <ItemPanel>
+        <GraphView
+          :is-infinity="calculated.isInfinity"
+          :count="calculated.count"
+          :total-amount="calculated.totalAmount"
+          :remained-debt-balance-list="calculated.remainedDebtBalanceList"
+          :payback-interest-list="calculated.paybackInterestList"
+          :payback-principal-list="calculated.paybackPrincipalList"
+          :interest-list="calculated.interestList"
+        />
       </ItemPanel>
     </template>
   </GlobalLayout>

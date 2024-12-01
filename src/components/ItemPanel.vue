@@ -14,9 +14,8 @@ defineProps<Props>();
 </template>
 <style scoped>
 .panel {
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
+  width: 100%;
+  height: 100%;
   padding: 24px;
   background-color: var(--color-background-panel);
   border-radius: 16px;
@@ -25,5 +24,9 @@ defineProps<Props>();
 
 .title {
   font-size: 20px;
+}
+
+.inner{
+  height: 100%;
 }
 </style>

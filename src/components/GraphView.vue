@@ -32,8 +32,11 @@ defineProps<Props>();
           class="bar"
           :style="{
             height: `${(remained / remainedDebtBalanceList[0]) * 100}%`,
+            width: `${100 / remainedDebtBalanceList.length}%`,
           }"
-        ></div>
+        >
+          <div class="barInner"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -47,18 +50,29 @@ defineProps<Props>();
 }
 
 .graphArea {
+  width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .barChart {
   display: flex;
-  column-gap: 8px;
   align-items: flex-end;
   height: 100%;
 }
 
 .bar {
-  width: 4px;
-  background-color: pink;
+  flex-shrink: 0;
+  min-width: 20px;
+  padding: 0;
+}
+
+.barInner {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(0deg, #5c76af, #80a3f0);
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: 75% 100%;
 }
 </style>

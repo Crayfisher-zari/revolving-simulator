@@ -2,7 +2,6 @@
 import { ref, computed } from "vue";
 import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
-import ItemPanel from "./components/ItemPanel.vue";
 import GraphView from "./components/GraphView.vue";
 
 const debtRows = ref<number>(100000);
@@ -48,6 +47,10 @@ const calculated = computed(() => {
     // 今月の利子の支払額
     const paybackInterest = payback.value - paybackPrincipal;
 
+    if(remainedDebtBalanceOverZero === 0){
+      break;
+    }
+
     // リストを更新
     remainedDebtBalanceList.push(Math.round(remainedDebtBalanceOverZero));
     paybackPrincipalList.push(Math.round(paybackPrincipal));
@@ -76,60 +79,28 @@ const calculated = computed(() => {
 <template>
   <GlobalLayout>
     <template #debt>
-      <ItemPanel>
-        <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
-      </ItemPanel>
+      <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
     </template>
     <template #interestRate>
-      <ItemPanel>
-        <NumberInput
-          v-model.number="interestRate"
-          label="利率（年利）"
-          unit="%"
-          :digits="3"
-        />
-      </ItemPanel>
+      <NumberInput v-model.number="interestRate" label="利率（年利）" unit="%" :digits="3" />
     </template>
     <template #payback>
-      <ItemPanel>
-        <NumberInput
-          v-model.number="payback"
-          label="毎月の返済行数"
-          unit="行"
-          :digits="9"
-        />
-      </ItemPanel>
+      <NumberInput v-model.number="payback" label="毎月の返済行数" unit="行" :digits="9" />
     </template>
     <template #newDebt>
-      <ItemPanel>
-        <div class="newPayback">
-          <NumberInput
-            v-model.number="newPayback"
-            label="新規の負債行数"
-            unit="行"
-            :digits="9"
-          />
-          <NumberInput
-            v-model.number="perMonth"
-            label="発生頻度"
-            unit="月に1回"
-            :digits="2"
-          />
-        </div>
-      </ItemPanel>
+      <div class="newPayback">
+        <NumberInput v-model.number="newPayback" label="新規の負債行数" unit="行" :digits="9" />
+        <NumberInput v-model.number="perMonth" label="発生頻度" unit="月に1回" :digits="2" />
+      </div>
+    </template>
+    <template #rightBlank>
+      <h1 class="mainTitle">技術的負債リボ払い<br>シミュレーター</h1>
     </template>
     <template #graph>
-      <ItemPanel>
-        <GraphView
-          :is-infinity="calculated.isInfinity"
-          :count="calculated.count"
-          :total-amount="calculated.totalAmount"
-          :remained-debt-balance-list="calculated.remainedDebtBalanceList"
-          :payback-interest-list="calculated.paybackInterestList"
-          :payback-principal-list="calculated.paybackPrincipalList"
-          :interest-list="calculated.interestList"
-        />
-      </ItemPanel>
+      <GraphView :is-infinity="calculated.isInfinity" :count="calculated.count" :total-amount="calculated.totalAmount"
+        :remained-debt-balance-list="calculated.remainedDebtBalanceList"
+        :payback-interest-list="calculated.paybackInterestList"
+        :payback-principal-list="calculated.paybackPrincipalList" :interest-list="calculated.interestList" />
     </template>
   </GlobalLayout>
 
@@ -141,5 +112,10 @@ const calculated = computed(() => {
 .newPayback {
   display: flex;
   column-gap: 16px;
+}
+
+.mainTitle{
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>

@@ -4,8 +4,8 @@
   -moz-osx-font-smoothing: grayscale;
 
   --color-background-panel: rgb(23 35 73 / 60%);
-  --color-text-primary: #fff;
-  --color-text-secondary: #999;
+  --color-text-primary: rgb(255 255 255 / 100%);
+  --color-text-secondary: rgb(255 255 255 / 80%);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -20,9 +20,9 @@ html {
   min-height: 100vh;
   background-image: linear-gradient(
     -15deg,
-    #219997 0%,
-    #5c76af 48%,
-    #4b1974 100%
+    #4f9290 0%,
+    #5277ba 50%,
+    #302670 100%
   );
 }
 

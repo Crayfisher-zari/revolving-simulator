@@ -1,21 +1,44 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import ItemPanel from "./ItemPanel.vue";
+
+</script>
 <template>
   <div class="globalWrapper">
     <div class="layout">
       <div class="debtRows">
-        <slot name="debt"></slot>
+        <ItemPanel>
+          <slot name="debt"></slot>
+        </ItemPanel>
       </div>
       <div class="interestRate">
-        <slot name="interestRate"></slot>
+        <ItemPanel>
+          <slot name="interestRate"></slot>
+        </ItemPanel>
       </div>
       <div class="payback">
-        <slot name="payback"></slot>
+        <ItemPanel>
+          <slot name="payback"></slot>
+        </ItemPanel>
       </div>
       <div class="newDebt">
-        <slot name="newDebt"></slot>
+        <ItemPanel>
+          <slot name="newDebt"></slot>
+        </ItemPanel>
       </div>
-      <div class="graph">
-        <slot name="graph"></slot>
+      <div class="rightBlank">
+        
+      </div>
+      <div class="graphAndList">
+        <div class="graph">
+          <ItemPanel>
+            <slot name="graph"></slot>
+          </ItemPanel>
+        </div>
+        <div class="list">
+          <ItemPanel>
+            <slot name="list"></slot>
+          </ItemPanel>
+        </div>
       </div>
     </div>
   </div>
@@ -29,12 +52,22 @@
 
 .layout {
   display: grid;
-  grid-template: "debtRows interestRate payback newDebt" auto "graph graph graph  graph" 1fr / auto auto auto auto;
+  grid-template: "debtRows interestRate payback newDebt" auto "graph graph graph graph" 1fr / auto auto auto auto;
   gap: 24px;
   height: 100%;
 }
 
-.graph {
+.graphAndList {
   grid-area: graph;
+  display: flex;
+  column-gap: 24px;
+}
+
+.graph{
+  width: 75%;
+}
+
+.list{
+  width: 25%;
 }
 </style>

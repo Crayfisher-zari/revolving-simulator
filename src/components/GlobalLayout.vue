@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import ItemPanel from "./ItemPanel.vue";
-
 </script>
 <template>
   <div class="globalWrapper">
@@ -25,9 +24,7 @@ import ItemPanel from "./ItemPanel.vue";
           <slot name="newDebt"></slot>
         </ItemPanel>
       </div>
-      <div class="rightBlank">
-        
-      </div>
+      <div class="rightBlank"></div>
       <div class="graphAndList">
         <div class="graph">
           <ItemPanel>
@@ -58,16 +55,16 @@ import ItemPanel from "./ItemPanel.vue";
 }
 
 .graphAndList {
-  grid-area: graph;
   display: flex;
+  grid-area: graph;
   column-gap: 24px;
 }
 
-.graph{
+.graph {
   width: 75%;
 }
 
-.list{
+.list {
   width: 25%;
 }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed} from "vue";
+import { computed } from "vue";
 type Props = {
   label: string;
   unit?: string;
@@ -10,7 +10,7 @@ withDefaults(defineProps<Props>(), {
   digits: 9,
 });
 const model = defineModel<number>();
-const liveDigits = computed(() => {
+const livedigits = computed(() => {
   return model.value?.toString().length ?? 1;
 });
 </script>
@@ -19,7 +19,7 @@ const liveDigits = computed(() => {
     <label class="labelAndInput">
       <span class="labelName">{{ label }}</span>
       <div class="inputWrapper">
-        <input v-model.number="model" type="text" :maxlength="digits"/>
+        <input v-model.number="model" type="text" :maxlength="digits" />
         <span v-if="unit" class="unit">{{ unit }}</span>
       </div>
     </label>
@@ -51,8 +51,7 @@ const liveDigits = computed(() => {
     height: 1px;
     content: "";
     background-color: rgb(255 255 255 / 30%);
-    transition:
-      background-color 0.3s var(--ease-out-quart),
+    transition: background-color 0.3s var(--ease-out-quart),
       height 0.3s var(--ease-out-quart);
   }
 
@@ -71,7 +70,7 @@ const liveDigits = computed(() => {
 }
 
 input {
-  width: calc(22px * v-bind(liveDigits));
+  width: calc(22px * v-bind(livedigits));
   font-size: 36px;
   font-weight: bold;
   color: var(--color-text-primary);

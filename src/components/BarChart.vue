@@ -33,13 +33,11 @@ const yAxisBase = computed(() =>
           v-for="(remained, index) in remainedDebtBalanceList"
           :key="index"
           class="barWrapper"
+          :style="{
+            width: `${100 / remainedDebtBalanceList.length}%`,
+          }"
         >
-          <div
-            class="bar"
-            :style="{
-              width: `${100 / remainedDebtBalanceList.length}%`,
-            }"
-          >
+          <div class="bar">
             <div
               class="barInner"
               :style="{ height: `${(remained / yAxisBase) * 100}%` }"
@@ -145,6 +143,7 @@ const yAxisBase = computed(() =>
 
 .barWrapper {
   position: relative;
+  min-width: 24px;
   height: calc(100% - 64px);
   margin-bottom: 32px;
 }
@@ -154,7 +153,6 @@ const yAxisBase = computed(() =>
   flex-shrink: 0;
   flex-direction: column;
   justify-content: flex-end;
-  min-width: 24px;
   height: 100%;
   padding: 0;
 }

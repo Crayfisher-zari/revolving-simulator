@@ -1,25 +1,27 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 type Props = {
   label: string;
   unit?: string;
   digits?: number;
 };
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   unit: "",
   digits: 9,
 });
 const model = defineModel<number>();
-const livedigits = computed(() => {
-  return model.value?.toString().length ?? 1;
-});
+const livedigits = ref<number>(model.value?.toString().length ?? props.digits);
+const calcDigits = (e:InputEvent) => {
+  console.log(e.target)
+  livedigits.value = (e.target as HTMLInputElement).value.length ?? 2;
+}
 </script>
 <template>
   <div class="wrapper">
     <label class="labelAndInput">
       <span class="labelName">{{ label }}</span>
       <div class="inputWrapper">
-        <input v-model.number="model" type="text" :maxlength="digits" />
+        <input v-model.number="model" type="text" :maxlength="digits" @input="calcDigits" />
         <span v-if="unit" class="unit">{{ unit }}</span>
       </div>
     </label>

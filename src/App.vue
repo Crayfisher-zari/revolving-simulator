@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
 import GraphView from "./components/GraphView.vue";
+import TableView from "./components/TableView.vue";
 
 const debtRows = ref<number>(100000);
 const interestRate = ref<number>(28);
@@ -127,10 +128,18 @@ const calculated = computed(() => {
         :interest-list="calculated.interestList"
       />
     </template>
+    <template #list>
+      <TableView
+        :is-infinity="calculated.isInfinity"
+        :count="calculated.count"
+        :total-amount="calculated.totalAmount"
+        :remained-debt-balance-list="calculated.remainedDebtBalanceList"
+        :payback-interest-list="calculated.paybackInterestList"
+        :payback-principal-list="calculated.paybackPrincipalList"
+        :interest-list="calculated.interestList"
+      />
+    </template>
   </GlobalLayout>
-
-  <p>支払回数：{{ calculated.count }}</p>
-  <p>支払総額：{{ calculated.totalAmount }}</p>
 </template>
 
 <style scoped>

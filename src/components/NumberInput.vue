@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 type Props = {
   label: string;
   unit?: string;
@@ -11,17 +11,22 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const model = defineModel<number>();
 const livedigits = ref<number>(model.value?.toString().length ?? props.digits);
-const calcDigits = (e:InputEvent) => {
-  console.log(e.target)
+const calcDigits = (e: InputEvent) => {
+  console.log(e.target);
   livedigits.value = (e.target as HTMLInputElement).value.length ?? 2;
-}
+};
 </script>
 <template>
   <div class="wrapper">
     <label class="labelAndInput">
       <span class="labelName">{{ label }}</span>
       <div class="inputWrapper">
-        <input v-model.number="model" type="text" :maxlength="digits" @input="calcDigits" />
+        <input
+          v-model.number="model"
+          type="text"
+          :maxlength="digits"
+          @input="calcDigits"
+        />
         <span v-if="unit" class="unit">{{ unit }}</span>
       </div>
     </label>

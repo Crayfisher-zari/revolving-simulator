@@ -61,10 +61,10 @@ import ItemPanel from "./ItemPanel.vue";
 }
 
 .graph {
-  width: 75%;
+  width: 68%;
 }
 
 .list {
-  width: 25%;
+  width: 32%;
 }
 </style>

@@ -77,8 +77,8 @@ const yAxisBase = computed(() =>
   color: var(--color-text-secondary);
   background-image: linear-gradient(
     0deg,
-    rgb(255 255 255 / 35%),
-    rgb(255 255 255 / 35%)
+    var(--color-border),
+    var(--color-border)
   );
   background-repeat: no-repeat;
   background-position: right 0% top 50%;

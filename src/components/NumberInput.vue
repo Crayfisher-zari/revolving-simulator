@@ -10,10 +10,10 @@ const props = withDefaults(defineProps<Props>(), {
   digits: 9,
 });
 const model = defineModel<number>();
-const livedigits = ref<number>(model.value?.toString().length ?? props.digits);
+const livedigits = ref<number>(model.value?.toString().length || props.digits);
 const calcDigits = (e: InputEvent) => {
   console.log(e.target);
-  livedigits.value = (e.target as HTMLInputElement).value.length ?? 2;
+  livedigits.value = (e.target as HTMLInputElement).value.length > 2 ? (e.target as HTMLInputElement).value.length : 3;
 };
 </script>
 <template>
@@ -21,12 +21,7 @@ const calcDigits = (e: InputEvent) => {
     <label class="labelAndInput">
       <span class="labelName">{{ label }}</span>
       <div class="inputWrapper">
-        <input
-          v-model.number="model"
-          type="text"
-          :maxlength="digits"
-          @input="calcDigits"
-        />
+        <input v-model.number="model" type="text" :maxlength="digits" @input="calcDigits" />
         <span v-if="unit" class="unit">{{ unit }}</span>
       </div>
     </label>

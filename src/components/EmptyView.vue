@@ -1,6 +1,6 @@
 <script lang="ts" setup></script>
 <template>
-  <div class="wrapper">
+  <div class="emptyWrapper">
     <div>
       <p class="empty">（ﾟ∇ﾟ;）</p>
       <p class="dontPay">払いきれないよ…</p>
@@ -8,7 +8,7 @@
   </div>
 </template>
 <style scoped>
-.wrapper {
+.emptyWrapper {
   display: flex;
   align-items: center;
   justify-content: center;

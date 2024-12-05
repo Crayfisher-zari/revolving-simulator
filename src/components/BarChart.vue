@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { roundUpToTop2Digits } from "../utils/roundUpToTop2Digits";
+import { timer } from "../utils/timer";
 
 type Props = {
   isInfinity: boolean;
@@ -12,9 +13,22 @@ type Props = {
   interestList: number[];
 };
 const props = defineProps<Props>();
+const animationState = ref(false);
 
 const yAxisBase = computed(() =>
   roundUpToTop2Digits(props.remainedDebtBalanceList[0])
+);
+
+watch(
+  () => props.isInfinity,
+  async () => {
+    if (animationState.value) {
+      return;
+    }
+    animationState.value = true;
+    await timer(100);
+    animationState.value = false;
+  }
 );
 </script>
 <template>
@@ -40,6 +54,7 @@ const yAxisBase = computed(() =>
           <div class="bar">
             <div
               class="barInner"
+              :class="{ reset: animationState }"
               :style="{ height: `${(remained / yAxisBase) * 100}%` }"
             ></div>
           </div>
@@ -159,10 +174,15 @@ const yAxisBase = computed(() =>
 
 .barInner {
   width: 100%;
-  height: calc(100%);
+  height: 0;
   background-image: linear-gradient(0deg, #607dbc, rgb(125 159 234));
   background-repeat: no-repeat;
   background-position: 50% 0;
   background-size: 70% 100%;
+  transition: height 0.8s var(--ease-out-quart);
+
+  &.reset {
+    height: 0 !important;
+  }
 }
 </style>

@@ -4,7 +4,6 @@ import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
 import GraphView from "./components/GraphView.vue";
 import TableView from "./components/TableView.vue";
-import EmptyView from "./components/EmptyView.vue";
 
 const debtRows = ref<number>(5000);
 const interestRate = ref<number>(15);
@@ -23,14 +22,14 @@ const calculated = computed(() => {
   let totalAmount = 0;
 
   while (debtBalance > 0) {
-    console.log(
-      debtBalance,
-      debtBalance > debtRows.value,
-      payback.value,
-      perMonth.value,
-      count,
-      perMonth.value && count % perMonth.value === 0
-    );
+    // console.log(
+    //   debtBalance,
+    //   debtBalance > debtRows.value,
+    //   payback.value,
+    //   perMonth.value,
+    //   count,
+    //   perMonth.value && count % perMonth.value === 0
+    // );
 
     if (
       newPayback.value &&
@@ -53,9 +52,12 @@ const calculated = computed(() => {
       interestList = [];
       break;
     }
-    if (newPayback.value && perMonth.value && count % perMonth.value === 0 &&
-      count > 0) {
-      console.log("add")
+    if (
+      newPayback.value &&
+      perMonth.value &&
+      count % perMonth.value === 0 &&
+      count > 0
+    ) {
       debtBalance += newPayback.value;
     }
     // 当月の利子（残高×利率% / 12ヶ月）
@@ -110,32 +112,63 @@ const calculated = computed(() => {
       <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
     </template>
     <template #interestRate>
-      <NumberInput v-model.number="interestRate" label="利率（年利）" unit="%" :digits="3" />
+      <NumberInput
+        v-model.number="interestRate"
+        label="利率（年利）"
+        unit="%"
+        :digits="3"
+      />
     </template>
     <template #payback>
-      <NumberInput v-model.number="payback" label="毎月の返済行数" unit="行" :digits="9" />
+      <NumberInput
+        v-model.number="payback"
+        label="毎月の返済行数"
+        unit="行"
+        :digits="9"
+      />
     </template>
     <template #newDebt>
       <div class="newPayback">
-        <NumberInput v-model.number="newPayback" label="新規の負債行数" unit="行" :digits="9" />
-        <NumberInput v-model.number="perMonth" label="発生頻度" unit="月に1回" :digits="3" />
+        <NumberInput
+          v-model.number="newPayback"
+          label="新規の負債行数"
+          unit="行"
+          :digits="5"
+        />
+        <NumberInput
+          v-model.number="perMonth"
+          label="発生頻度"
+          unit="月に1回"
+          :digits="3"
+        />
       </div>
     </template>
     <template #rightBlank>
       <h1 class="mainTitle">技術的負債リボ払い<br />シミュレーター</h1>
     </template>
     <template #graph>
-      <GraphView v-if="!calculated.isInfinity" :is-infinity="calculated.isInfinity" :count="calculated.count"
-        :total-amount="calculated.totalAmount" :remained-debt-balance-list="calculated.remainedDebtBalanceList"
+      <GraphView
+        :is-infinity="calculated.isInfinity"
+        :count="calculated.count"
+        :total-amount="calculated.totalAmount"
+        :remained-debt-balance-list="calculated.remainedDebtBalanceList"
         :payback-interest-list="calculated.paybackInterestList"
-        :payback-principal-list="calculated.paybackPrincipalList" :interest-list="calculated.interestList" />
-      <EmptyView v-else />
+        :payback-principal-list="calculated.paybackPrincipalList"
+        :interest-list="calculated.interestList"
+      />
     </template>
     <template #list>
-      <TableView v-if="!calculated.isInfinity" :is-infinity="calculated.isInfinity" :payback :count="calculated.count"
-        :total-amount="calculated.totalAmount" :remained-debt-balance-list="calculated.remainedDebtBalanceList"
+      <TableView
+        v-if="!calculated.isInfinity"
+        :is-infinity="calculated.isInfinity"
+        :payback
+        :count="calculated.count"
+        :total-amount="calculated.totalAmount"
+        :remained-debt-balance-list="calculated.remainedDebtBalanceList"
         :payback-interest-list="calculated.paybackInterestList"
-        :payback-principal-list="calculated.paybackPrincipalList" :interest-list="calculated.interestList" />
+        :payback-principal-list="calculated.paybackPrincipalList"
+        :interest-list="calculated.interestList"
+      />
     </template>
   </GlobalLayout>
 </template>

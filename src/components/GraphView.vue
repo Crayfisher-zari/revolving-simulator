@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import BarChart from "./BarChart.vue";
+import EmptyView from "./EmptyView.vue";
 type Props = {
   isInfinity: boolean;
   count: number;
@@ -9,10 +10,10 @@ type Props = {
   paybackInterestList: number[];
   interestList: number[];
 };
-defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 <template>
-  <div class="wrapper">
+  <div v-show="!props.isInfinity" class="wrapper">
     <h2 class="title">
       <span class="titleRow">
         <span class="total">返済総行数</span
@@ -37,6 +38,7 @@ defineProps<Props>();
       :interest-list
     />
   </div>
+  <EmptyView v-show="props.isInfinity" />
 </template>
 <style scoped>
 .wrapper {

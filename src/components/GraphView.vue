@@ -63,6 +63,7 @@ defineProps<Props>();
 
 .number {
   font-size: 36px;
+  translate: 0 1px;
 }
 
 .unit {

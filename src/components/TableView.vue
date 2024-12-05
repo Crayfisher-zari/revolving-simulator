@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 type Props = {
   isInfinity: boolean;
+  payback: number;
   count: number;
   totalAmount: number;
   remainedDebtBalanceList: number[];
@@ -17,6 +18,7 @@ defineProps<Props>();
         <tr>
           <th class="month">月</th>
           <th class="debt">残高</th>
+          <th class="payback">返済額</th>
           <th class="pricipal">元本充当額</th>
           <th class="interest">利子充当額</th>
         </tr>
@@ -25,6 +27,7 @@ defineProps<Props>();
         <tr v-for="(remained, index) in remainedDebtBalanceList" :key="index">
           <td>{{ index + 1 }}</td>
           <td>{{ remained.toLocaleString("ja-JP") }}</td>
+          <td>{{ payback.toLocaleString("ja-JP") }}</td>
           <td>{{ paybackPrincipalList[index].toLocaleString("ja-JP") }}</td>
           <td>{{ paybackInterestList[index].toLocaleString("ja-JP") }}</td>
         </tr>
@@ -55,7 +58,8 @@ defineProps<Props>();
 
 .table {
   position: absolute;
-  width: 100%;
+  width: auto;
+  min-width: 100%;
   border-collapse: collapse;
 
   th {

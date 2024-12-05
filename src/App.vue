@@ -4,32 +4,56 @@ import GlobalLayout from "./components/GlobalLayout.vue";
 import NumberInput from "./components/NumberInput.vue";
 import GraphView from "./components/GraphView.vue";
 import TableView from "./components/TableView.vue";
+import EmptyView from "./components/EmptyView.vue";
 
-const debtRows = ref<number>(100000);
-const interestRate = ref<number>(28);
-const payback = ref<number>(2500);
+const debtRows = ref<number>(5000);
+const interestRate = ref<number>(15);
+const payback = ref<number>(250);
 const newPayback = ref<number | undefined>(undefined);
 const perMonth = ref<number | undefined>(undefined);
 
 const calculated = computed(() => {
   let count = 0;
   let debtBalance = debtRows.value;
-  const remainedDebtBalanceList = [];
-  const paybackPrincipalList = [];
-  const paybackInterestList = [];
-  const interestList = [];
+  let remainedDebtBalanceList = [];
+  let paybackPrincipalList = [];
+  let paybackInterestList = [];
+  let interestList = [];
   let isInfinity = false;
   let totalAmount = 0;
 
   while (debtBalance > 0) {
-    console.log(debtBalance, debtBalance > debtRows.value, payback.value);
-    if (debtBalance > debtRows.value) {
+    console.log(
+      debtBalance,
+      debtBalance > debtRows.value,
+      payback.value,
+      count,
+      perMonth.value && count % perMonth.value
+    );
+
+    if (
+      newPayback.value &&
+      perMonth.value &&
+      debtBalance >= debtRows.value &&
+      count % perMonth.value === 0 &&
+      count > 0
+    ) {
       isInfinity = true;
+      remainedDebtBalanceList = [];
+      paybackPrincipalList = [];
+      paybackInterestList = [];
+      interestList = [];
+      break;
+    } else if (debtBalance >= debtRows.value && count > 2) {
+      isInfinity = true;
+      remainedDebtBalanceList = [];
+      paybackPrincipalList = [];
+      paybackInterestList = [];
+      interestList = [];
       break;
     }
-    if (debtBalance >= debtRows.value && count > 2) {
-      isInfinity = true;
-      break;
+    if (newPayback.value && perMonth.value && count % perMonth.value === 0) {
+      debtBalance += newPayback.value;
     }
     // 当月の利子（残高×利率% / 12ヶ月）
     const interestOfTheMonth = (debtBalance * interestRate.value) / 100 / 12;
@@ -119,6 +143,7 @@ const calculated = computed(() => {
     </template>
     <template #graph>
       <GraphView
+        v-if="!calculated.isInfinity"
         :is-infinity="calculated.isInfinity"
         :count="calculated.count"
         :total-amount="calculated.totalAmount"
@@ -127,10 +152,13 @@ const calculated = computed(() => {
         :payback-principal-list="calculated.paybackPrincipalList"
         :interest-list="calculated.interestList"
       />
+      <EmptyView v-else />
     </template>
     <template #list>
       <TableView
+        v-if="!calculated.isInfinity"
         :is-infinity="calculated.isInfinity"
+        :payback
         :count="calculated.count"
         :total-amount="calculated.totalAmount"
         :remained-debt-balance-list="calculated.remainedDebtBalanceList"

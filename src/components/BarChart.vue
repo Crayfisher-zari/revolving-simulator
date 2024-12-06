@@ -80,6 +80,8 @@ onMounted(async () => {
             }"
           >
             <div v-if="yAxisBase !== 0" class="bar">
+              <div class="barBalloon">{{ remained }}</div>
+
               <div
                 class="barInner"
                 :class="{ reset: animationState }"
@@ -171,6 +173,7 @@ onMounted(async () => {
   position: relative;
   bottom: 19px;
   height: calc(100% + 32px);
+  padding-left: 8px;
   overflow-x: auto;
   scrollbar-width: none;
 
@@ -196,15 +199,24 @@ onMounted(async () => {
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-end;
   height: 100%;
   padding: 0;
+
+  &:has(.barInner:hover) {
+    .barBalloon {
+      opacity: 1;
+      transition: opacity 0.8s var(--ease-out-quart);
+      translate: 0 0;
+    }
+  }
 }
 
 .barInner {
   width: 100%;
   height: 0;
-  background-image: linear-gradient(0deg, #607dbc, rgb(125 159 234));
+  background-image: linear-gradient(0deg, #4063ad, rgb(125 176 234));
   background-repeat: no-repeat;
   background-position: 50% 0;
   background-size: 70% 100%;
@@ -214,5 +226,19 @@ onMounted(async () => {
     height: 0 !important;
     transition: none;
   }
+}
+
+.barBalloon {
+  position: relative;
+  top: -8px;
+  width: min-content;
+  padding: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  background-color: var(--color-background-panel);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.1s var(--ease-out-quart);
 }
 </style>

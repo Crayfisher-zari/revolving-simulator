@@ -182,6 +182,12 @@ const calculated = computed(() => {
       />
     </template>
   </GlobalLayout>
+  <small class="creator"
+    >Created by
+    <a href="https://x.com/crayfisher_zari" target="_blank"
+      >@crayfisher_zari</a
+    ></small
+  >
 </template>
 
 <style scoped>
@@ -193,5 +199,17 @@ const calculated = computed(() => {
 .newPayback {
   display: flex;
   column-gap: 16px;
+}
+
+.creator {
+  position: fixed;
+  bottom: 20px;
+  left: 36px;
+  font-size: 12px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 </style>

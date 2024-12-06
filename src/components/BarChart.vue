@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { roundUpToTop2Digits } from "../utils/roundUpToTop2Digits";
 import { timer } from "../utils/timer";
+import { roundDecimals } from "../utils/roundDecimals";
 
 type Props = {
   isInfinity: boolean;
@@ -12,6 +13,7 @@ type Props = {
   paybackInterestList: number[];
   interestList: number[];
 };
+
 const props = defineProps<Props>();
 const animationState = ref(false);
 
@@ -19,49 +21,76 @@ const yAxisBase = computed(() =>
   roundUpToTop2Digits(props.remainedDebtBalanceList[0])
 );
 
+const startAnimation = async () => {
+  if (animationState.value) {
+    return;
+  }
+  animationState.value = true;
+  await timer(10);
+  animationState.value = false;
+};
+
 watch(
   () => props.isInfinity,
   async () => {
-    if (animationState.value) {
-      return;
-    }
-    animationState.value = true;
-    await timer(100);
-    animationState.value = false;
+    await startAnimation();
   }
 );
+
+watch(
+  () => props.remainedDebtBalanceList.length,
+  async () => {
+    await startAnimation();
+  }
+);
+
+onMounted(async () => {
+  await startAnimation();
+});
 </script>
 <template>
   <div class="graphArea">
     <div class="barChartRules">
       <div class="yAxis yAxis0">0</div>
-      <div class="yAxis yAxis1">{{ (yAxisBase / 5) * 1 }}</div>
-      <div class="yAxis yAxis2">{{ (yAxisBase / 5) * 2 }}</div>
-      <div class="yAxis yAxis3">{{ (yAxisBase / 5) * 3 }}</div>
-      <div class="yAxis yAxis4">{{ (yAxisBase / 5) * 4 }}</div>
-      <div class="yAxis yAxis5">{{ (yAxisBase / 5) * 5 }}</div>
+      <div class="yAxis yAxis1">
+        {{ roundDecimals((yAxisBase / 5) * 1, 0) }}
+      </div>
+      <div class="yAxis yAxis2">
+        {{ roundDecimals((yAxisBase / 5) * 2, 0) }}
+      </div>
+      <div class="yAxis yAxis3">
+        {{ roundDecimals((yAxisBase / 5) * 3, 0) }}
+      </div>
+      <div class="yAxis yAxis4">
+        {{ roundDecimals((yAxisBase / 5) * 4, 0) }}
+      </div>
+      <div class="yAxis yAxis5">
+        {{ roundDecimals((yAxisBase / 5) * 5, 0) }}
+      </div>
     </div>
     <div class="barChartWrapper">
       <div class="barChart">
-        <div
-          v-for="(remained, index) in remainedDebtBalanceList"
-          :key="index"
-          class="barWrapper"
-          :style="{
-            width: `${100 / remainedDebtBalanceList.length}%`,
-          }"
-        >
-          <div class="bar">
-            <div
-              class="barInner"
-              :class="{ reset: animationState }"
-              :style="{ height: `${(remained / yAxisBase) * 100}%` }"
-            ></div>
+        <TransitionGroup name="bar">
+          <div
+            v-for="(remained, index) in remainedDebtBalanceList"
+            :key="index"
+            class="barWrapper"
+            :style="{
+              width: `${100 / remainedDebtBalanceList.length}%`,
+            }"
+          >
+            <div v-if="yAxisBase !== 0" class="bar">
+              <div
+                class="barInner"
+                :class="{ reset: animationState }"
+                :style="{ height: `${(remained / yAxisBase) * 100}%` }"
+              ></div>
+            </div>
+            <div class="xAxis" :style="{}">
+              {{ index + 1 }}
+            </div>
           </div>
-          <div class="xAxis" :style="{}">
-            {{ index + 1 }}
-          </div>
-        </div>
+        </TransitionGroup>
       </div>
     </div>
   </div>
@@ -183,6 +212,7 @@ watch(
 
   &.reset {
     height: 0 !important;
+    transition: none;
   }
 }
 </style>

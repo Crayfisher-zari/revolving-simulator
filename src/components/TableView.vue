@@ -27,7 +27,17 @@ defineProps<Props>();
         <tr v-for="(remained, index) in remainedDebtBalanceList" :key="index">
           <td>{{ index + 1 }}</td>
           <td>{{ remained.toLocaleString("ja-JP") }}</td>
-          <td>{{ payback.toLocaleString("ja-JP") }}</td>
+          <!-- 一括返済の場合はtotalAmountとする -->
+          <td v-if="index === 0 && remained < payback">
+            {{ totalAmount.toLocaleString("ja-JP") }}
+          </td>
+          <td v-else>
+            {{
+              remained > payback
+                ? payback.toLocaleString("ja-JP")
+                : remained.toLocaleString("ja-JP")
+            }}
+          </td>
           <td>{{ paybackPrincipalList[index].toLocaleString("ja-JP") }}</td>
           <td>{{ paybackInterestList[index].toLocaleString("ja-JP") }}</td>
         </tr>
@@ -58,8 +68,8 @@ defineProps<Props>();
 
 .table {
   position: absolute;
-  width: auto;
-  min-width: 100%;
+  width: 100%;
+  min-width: 360px;
   border-collapse: collapse;
 
   th {

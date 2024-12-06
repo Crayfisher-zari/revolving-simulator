@@ -4,6 +4,9 @@ import ItemPanel from "./ItemPanel.vue";
 <template>
   <div class="globalWrapper">
     <div class="layout">
+      <header class="header">
+        <slot name="header" />
+      </header>
       <div class="debtRows">
         <ItemPanel>
           <slot name="debt"></slot>
@@ -49,9 +52,13 @@ import ItemPanel from "./ItemPanel.vue";
 
 .layout {
   display: grid;
-  grid-template: "debtRows interestRate payback newDebt" auto "graph graph graph graph" 1fr / auto auto auto auto;
+  grid-template: "header header header header" 40px "debtRows interestRate payback newDebt" auto "graph graph graph graph" 1fr / auto auto auto auto;
   gap: 24px;
   height: 100%;
+}
+
+.header {
+  grid-area: header;
 }
 
 .graphAndList {

@@ -7,17 +7,17 @@ import TableView from "./components/TableView.vue";
 
 const debtRows = ref<number>(5000);
 const interestRate = ref<number>(15);
-const payback = ref<number>(150);
+const payback = ref<number>(120);
 const newPayback = ref<number | undefined>(undefined);
 const perMonth = ref<number | undefined>(undefined);
 
 const calculated = computed(() => {
   let count = 0;
   let debtBalance = debtRows.value;
-  let remainedDebtBalanceList = [];
-  let paybackPrincipalList = [];
-  let paybackInterestList = [];
-  let interestList = [];
+  let remainedDebtBalanceList: number[] = [];
+  let paybackPrincipalList: number[] = [];
+  let paybackInterestList: number[] = [];
+  let interestList: number[] = [];
   let isInfinity = false;
   let totalAmount = 0;
 
@@ -77,6 +77,17 @@ const calculated = computed(() => {
     // 今月の利子の支払額
     const paybackInterest = payback.value - paybackPrincipal;
 
+    // 一括返済の場合
+    if (count === 0 && remainedDebtBalanceOverZero === 0) {
+      remainedDebtBalanceList.push(0);
+      paybackPrincipalList.push(Math.round(debtBalance + interestOfTheMonth));
+      paybackInterestList.push(Math.round(paybackInterest));
+      interestList.push(Math.round(interestOfTheMonth));
+      totalAmount = Math.round(debtBalance + interestOfTheMonth);
+      count++;
+      break;
+    }
+
     if (remainedDebtBalanceOverZero === 0) {
       break;
     }
@@ -108,6 +119,9 @@ const calculated = computed(() => {
 
 <template>
   <GlobalLayout>
+    <template #header>
+      <h1 class="mainTitle">技術的負債リボ払いシミュレーター</h1>
+    </template>
     <template #debt>
       <NumberInput v-model.number="debtRows" label="負債行数" unit="行" />
     </template>
@@ -116,7 +130,7 @@ const calculated = computed(() => {
         v-model.number="interestRate"
         label="利率（年利）"
         unit="%"
-        :digits="3"
+        :digits="4"
       />
     </template>
     <template #payback>
@@ -142,9 +156,6 @@ const calculated = computed(() => {
           :digits="3"
         />
       </div>
-    </template>
-    <template #rightBlank>
-      <h1 class="mainTitle">技術的負債リボ払い<br />シミュレーター</h1>
     </template>
     <template #graph>
       <GraphView
@@ -174,13 +185,13 @@ const calculated = computed(() => {
 </template>
 
 <style scoped>
+.mainTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .newPayback {
   display: flex;
   column-gap: 16px;
-}
-
-.mainTitle {
-  font-size: 16px;
-  font-weight: bold;
 }
 </style>

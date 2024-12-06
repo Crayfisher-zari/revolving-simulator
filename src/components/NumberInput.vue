@@ -11,15 +11,14 @@ const props = withDefaults(defineProps<Props>(), {
   digits: 9,
 });
 const emit = defineEmits(["update:modelValue"]);
-// const model = defineModel<number>();
 const livedigits = ref<number>(
   props.modelValue?.toString().length || props.digits
 );
 const calcDigits = (e: Event) => {
   livedigits.value =
-    (e.target as HTMLInputElement).value.length > 2
+    (e.target as HTMLInputElement).value.length > 1
       ? (e.target as HTMLInputElement).value.length
-      : 3;
+      : 2;
 };
 </script>
 <template>
@@ -30,7 +29,7 @@ const calcDigits = (e: Event) => {
         <input
           :value="props.modelValue"
           type="text"
-          :maxlength="digits"
+          maxlength="9"
           @blur="
             emit('update:modelValue', ($event.target as HTMLInputElement).value)
           "

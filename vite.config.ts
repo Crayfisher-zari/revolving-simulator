@@ -7,7 +7,7 @@ const basePath = process.env.BASE_PATH || "/";
 // https://vite.dev/config/
 export default defineConfig({
   build: {
-    outDir: "../dist",
+    outDir: "./dist",
   },
   base: basePath,
   plugins: [vue()],

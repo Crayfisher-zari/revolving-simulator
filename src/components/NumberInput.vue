@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emit = defineEmits(["update:modelValue"]);
 const livedigits = ref<number>(
-  props.modelValue?.toString().length || props.digits
+  props.modelValue?.toString().length || props.digits,
 );
 const calcDigits = (e: Event) => {
   livedigits.value =
@@ -66,7 +66,8 @@ const calcDigits = (e: Event) => {
     height: 1px;
     content: "";
     background-color: rgb(255 255 255 / 30%);
-    transition: background-color 0.3s var(--ease-out-quart),
+    transition:
+      background-color 0.3s var(--ease-out-quart),
       height 0.3s var(--ease-out-quart);
   }
 

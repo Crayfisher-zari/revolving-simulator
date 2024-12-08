@@ -18,7 +18,7 @@ const props = defineProps<Props>();
 const animationState = ref(false);
 
 const yAxisBase = computed(() =>
-  roundUpToTop2Digits(props.remainedDebtBalanceList[0])
+  roundUpToTop2Digits(props.remainedDebtBalanceList[0]),
 );
 
 const startAnimation = async () => {
@@ -34,14 +34,14 @@ watch(
   () => props.isInfinity,
   async () => {
     await startAnimation();
-  }
+  },
 );
 
 watch(
   () => props.remainedDebtBalanceList.length,
   async () => {
     await startAnimation();
-  }
+  },
 );
 
 onMounted(async () => {

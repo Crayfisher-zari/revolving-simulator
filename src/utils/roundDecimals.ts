@@ -6,7 +6,7 @@
  */
 export const roundDecimals = (
   number: number,
-  maximumFractionDigits: number
+  maximumFractionDigits: number,
 ): string => {
   return number.toLocaleString("ja-JP", {
     maximumFractionDigits: maximumFractionDigits, // 小数点以下の最大桁数を指定する

@@ -27,7 +27,6 @@ import ItemPanel from "./ItemPanel.vue";
           <slot name="newDebt"></slot>
         </ItemPanel>
       </div>
-      <div class="rightBlank"></div>
       <div class="graphAndList">
         <div class="graph">
           <ItemPanel>
@@ -61,6 +60,10 @@ import ItemPanel from "./ItemPanel.vue";
   grid-area: header;
 }
 
+.newDebt{
+  grid-area: newDebt;
+}
+
 .graphAndList {
   display: flex;
   grid-area: graph;
@@ -73,5 +76,15 @@ import ItemPanel from "./ItemPanel.vue";
 
 .list {
   width: 32%;
+}
+
+@media screen and (width < 1080px) {
+  .layout {
+  display: grid;
+  grid-template: "header header header " 40px "debtRows interestRate payback" auto "newDebt newDebt newDebt" auto "graph graph graph" 1fr / auto auto auto;
+  gap: 24px;
+  height: 100%;
+}
+
 }
 </style>

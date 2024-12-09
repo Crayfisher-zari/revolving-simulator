@@ -60,7 +60,19 @@ import ItemPanel from "./ItemPanel.vue";
   grid-area: header;
 }
 
-.newDebt{
+.debtRows {
+  grid-area: debtRows;
+}
+
+.interestRate {
+  grid-area: interestRate;
+}
+
+.payback {
+  grid-area: payback;
+}
+
+.newDebt {
   grid-area: newDebt;
 }
 
@@ -79,12 +91,50 @@ import ItemPanel from "./ItemPanel.vue";
 }
 
 @media screen and (width < 1080px) {
+  .globalWrapper {
+    padding: 24px;
+  }
+
   .layout {
-  display: grid;
-  grid-template: "header header header " 40px "debtRows interestRate payback" auto "newDebt newDebt newDebt" auto "graph graph graph" 1fr / auto auto auto;
-  gap: 24px;
-  height: 100%;
+    grid-template: "header header header " 40px "debtRows interestRate payback" auto "newDebt newDebt newDebt" auto "graph graph graph" 1fr / auto auto auto;
+  }
 }
 
+@media screen and (width < 1025px) {
+  .globalWrapper {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .graphAndList {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    height: 100%;
+  }
+
+  .graph {
+    width: 100%;
+    height: 100%;
+    height: 600px;
+  }
+
+  .list {
+    width: 100%;
+    height: 100%;
+    height: 500px;
+  }
+}
+
+@media screen and (width < 810px) {
+  .layout {
+    grid-template: "header header" 40px "debtRows interestRate " auto "payback payback" auto "newDebt newDebt" auto "graph graph" 1100px / auto auto;
+  }
+}
+
+@media screen and (width < 510px) {
+  .layout {
+    grid-template: "header" 30px "debtRows" auto "interestRate" auto "payback" auto "newDebt" auto "graph" 1100px / auto;
+  }
 }
 </style>

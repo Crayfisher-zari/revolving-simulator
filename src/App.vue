@@ -203,13 +203,19 @@ const calculated = computed(() => {
 
 .creator {
   position: fixed;
-  bottom: 20px;
+  bottom: 12px;
   left: 36px;
   font-size: 12px;
 
   a {
     color: inherit;
     text-decoration: none;
+  }
+}
+
+@media screen and (width < 510px) {
+  .mainTitle {
+    font-size: 18px;
   }
 }
 </style>

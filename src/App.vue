@@ -5,7 +5,7 @@ import GraphView from "./components/GraphView.vue";
 import TableView from "./components/TableView.vue";
 import { useCalculater } from "./composables/useCalculater";
 
-// 残高や利子を計算
+// 残高や利息を計算
 const { debtRows, interestRate, payback, newPayback, perMonth, calculated } =
   useCalculater();
 </script>

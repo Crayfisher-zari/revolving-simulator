@@ -24,7 +24,7 @@ const props = defineProps<Props>();
       </span>
       <span class="titleRow">
         <span class="total">返済期間</span
-        ><span class="number">{{ count.toLocaleString("ja-JP") }}</span
+        ><span class="number">{{ (count + 1).toLocaleString("ja-JP") }}</span
         ><span class="unit month">ヶ月</span>
       </span>
     </h2>
@@ -50,7 +50,7 @@ const props = defineProps<Props>();
 }
 
 .title {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .titleRow {

@@ -80,13 +80,13 @@ onMounted(async () => {
             }"
           >
             <div v-if="yAxisBase !== 0" class="bar">
-              <div class="barBalloon">{{ remained }}</div>
-
               <div
                 class="barInner"
                 :class="{ reset: animationState }"
                 :style="{ height: `${(remained / yAxisBase) * 100}%` }"
-              ></div>
+              >
+                <div class="barBalloon">{{ remained }}</div>
+              </div>
             </div>
             <div class="xAxis" :style="{}">
               {{ index + 1 }}
@@ -113,13 +113,15 @@ onMounted(async () => {
   left: 0;
   z-index: -1;
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 48px);
 }
 
 .yAxis {
   position: absolute;
   width: 100%;
+  height: 1px;
   font-size: 12px;
+  line-height: 0;
   color: var(--color-text-secondary);
   background-image: linear-gradient(
     0deg,
@@ -191,7 +193,7 @@ onMounted(async () => {
 .barWrapper {
   position: relative;
   min-width: 24px;
-  height: calc(100% - 64px);
+  height: calc(100% - 80px);
   margin-bottom: 32px;
 }
 
@@ -203,17 +205,10 @@ onMounted(async () => {
   justify-content: flex-end;
   height: 100%;
   padding: 0;
-
-  &:has(.barInner:hover) {
-    .barBalloon {
-      opacity: 1;
-      transition: opacity 0.8s var(--ease-out-quart);
-      translate: 0 0;
-    }
-  }
 }
 
 .barInner {
+  position: relative;
   width: 100%;
   height: 0;
   background-image: linear-gradient(0deg, #4063ad, rgb(125 176 234));
@@ -226,11 +221,19 @@ onMounted(async () => {
     height: 0 !important;
     transition: none;
   }
+
+  &:hover {
+    .barBalloon {
+      opacity: 1;
+      transition: opacity 0.8s var(--ease-out-quart);
+    }
+  }
 }
 
 .barBalloon {
-  position: relative;
-  top: -8px;
+  position: absolute;
+  top: 0;
+  left: 50%;
   width: min-content;
   padding: 4px;
   font-size: 12px;
@@ -240,5 +243,6 @@ onMounted(async () => {
   border-radius: 4px;
   opacity: 0;
   transition: opacity 0.1s var(--ease-out-quart);
+  translate: -50% -30px;
 }
 </style>

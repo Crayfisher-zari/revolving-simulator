@@ -20,7 +20,7 @@ defineProps<Props>();
           <th class="debt">残高</th>
           <th class="payback">返済額</th>
           <th class="pricipal">元本充当額</th>
-          <th class="interest">利子充当額</th>
+          <th class="interest">利息充当額</th>
         </tr>
       </thead>
       <tbody>
@@ -33,13 +33,17 @@ defineProps<Props>();
           </td>
           <td v-else>
             {{
-              remained > payback
-                ? payback.toLocaleString("ja-JP")
-                : remained.toLocaleString("ja-JP")
+              (
+                paybackPrincipalList[index] + paybackInterestList[index]
+              ).toLocaleString("ja-JP")
             }}
           </td>
-          <td>{{ paybackPrincipalList[index].toLocaleString("ja-JP") }}</td>
-          <td>{{ paybackInterestList[index].toLocaleString("ja-JP") }}</td>
+          <td>
+            {{ paybackPrincipalList[index]?.toLocaleString("ja-JP") ?? "-" }}
+          </td>
+          <td>
+            {{ paybackInterestList[index]?.toLocaleString("ja-JP") ?? "-" }}
+          </td>
         </tr>
       </tbody>
     </table>

@@ -1,20 +1,20 @@
 import { computed, ref } from "vue";
 
 /**
- * 負債残高、利子などの計算を行う
+ * 負債残高、利息などの計算を行う
  * @returns
  */
 export const useCalculater = () => {
   const debtRows = ref<number>(5000);
   const interestRate = ref<number>(15);
-  const payback = ref<number>(120);
+  const payback = ref<number>(2000);
   const newPayback = ref<number | undefined>(undefined);
   const perMonth = ref<number | undefined>(undefined);
 
   const calculated = computed(() => {
     let count = 0;
     let debtBalance = debtRows.value;
-    let remainedDebtBalanceList: number[] = [];
+    let remainedDebtBalanceList: number[] = [debtBalance];
     let paybackPrincipalList: number[] = [];
     let paybackInterestList: number[] = [];
     let interestList: number[] = [];
@@ -51,22 +51,22 @@ export const useCalculater = () => {
       ) {
         debtBalance += newPayback.value;
       }
-      // 当月の利子（残高×利率% / 12ヶ月）
+      // 当月の利息（残高×利率% / 12ヶ月）
       const interestOfTheMonth = (debtBalance * interestRate.value) / 100 / 12;
       // 当月の負債残高
       const debtBalanceOfTheMonth = debtBalance + interestOfTheMonth;
+
+      // 今月の元金の支払額
+      const paybackPrincipal = payback.value - interestOfTheMonth;
+
+      // 今月の利息の支払額
+      const paybackInterest = payback.value - paybackPrincipal;
 
       // 当月の返済後の負債残高
       const remainedDebtBalance = debtBalanceOfTheMonth - payback.value;
       // 0以下になったら0にする
       const remainedDebtBalanceOverZero =
         remainedDebtBalance < 0 ? 0 : remainedDebtBalance;
-
-      // 今月の元金の支払額
-      const paybackPrincipal = payback.value - interestOfTheMonth;
-
-      // 今月の利子の支払額
-      const paybackInterest = payback.value - paybackPrincipal;
 
       // 一括返済の場合
       if (count === 0 && remainedDebtBalanceOverZero === 0) {
@@ -80,6 +80,9 @@ export const useCalculater = () => {
       }
 
       if (remainedDebtBalanceOverZero === 0) {
+        totalAmount += debtBalance + Math.round(interestOfTheMonth);
+        paybackPrincipalList.push(Math.round(debtBalance));
+        paybackInterestList.push(Math.round(interestOfTheMonth));
         break;
       }
 

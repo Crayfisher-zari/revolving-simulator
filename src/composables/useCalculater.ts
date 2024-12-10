@@ -7,7 +7,7 @@ import { computed, ref } from "vue";
 export const useCalculater = () => {
   const debtRows = ref<number>(5000);
   const interestRate = ref<number>(15);
-  const payback = ref<number>(2000);
+  const payback = ref<number>(120);
   const newPayback = ref<number | undefined>(undefined);
   const perMonth = ref<number | undefined>(undefined);
 
